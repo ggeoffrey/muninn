@@ -1,4 +1,4 @@
 #!/bin/bash
 
-cp ./target/uberjar/scrapper.jar ./dist/
+cp ./target/uberjar/muninn.jar ./dist/
 chmod +x ./dist/extractSummary.sh

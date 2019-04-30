@@ -1,7 +1,7 @@
-(ns scrapper.websites
+(ns muninn.websites
   (:require [net.cgrand.enlive-html :as html]
-            [scrapper.browser :as browser]
-            [scrapper.parser :as parser]
+            [muninn.browser :as browser]
+            [muninn.parser :as parser]
             [clojure.string :as str]))
 
 (defn- get-website-content! [url]

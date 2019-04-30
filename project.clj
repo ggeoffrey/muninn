@@ -1,4 +1,4 @@
-(defproject scrapper "0.1.0-SNAPSHOT"
+(defproject muninn "0.1.0-SNAPSHOT"
   :description "FIXME: write description"
   :url "http://example.com/FIXME"
   :license {:name "EPL-2.0 OR GPL-2.0-or-later WITH Classpath-exception-2.0"
@@ -11,7 +11,7 @@
                  [ch.qos.logback/logback-classic "1.2.3"]
                  [ch.qos.logback/logback-core "1.2.3"]]
   :jvm-opts ["-Dlogback.configurationFile=logback.xml"]
-  :main ^:skip-aot scrapper.core
+  :main ^:skip-aot muninn.core
   :target-path "target/%s"
   :profiles {:uberjar {:aot          :all
-                       :uberjar-name "scrapper.jar"}})
+                       :uberjar-name "muninn.jar"}})

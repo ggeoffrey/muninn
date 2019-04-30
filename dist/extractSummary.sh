@@ -1,3 +1,3 @@
 #!/bin/bash
 
-java -jar scrapper.jar $1
+java -jar muninn.jar $1

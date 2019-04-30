@@ -1,4 +1,4 @@
-(ns scrapper.browser
+(ns muninn.browser
   (:require [clj-http.client :as http])
   (:import java.net.URLEncoder))
 

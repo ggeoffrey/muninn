@@ -1,4 +1,4 @@
-(ns scrapper.filterer
+(ns muninn.filterer
   (:require [clj-fuzzy.stemmers :refer [lancaster lovins]]
             [clojure.string :as str]))
 

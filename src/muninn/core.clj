@@ -1,10 +1,10 @@
-(ns scrapper.core
+(ns muninn.core
   (:require [clojure.string :as str]
             [clojure.edn :as edn]
             [clojure.tools.logging :as log]
-            [scrapper.websites :as website]
-            [scrapper.filterer :as filterer]
-            [scrapper.google :as google]
+            [muninn.websites :as website]
+            [muninn.filterer :as filterer]
+            [muninn.google :as google]
             [clojure.java.io :as io])
   (:gen-class))
 

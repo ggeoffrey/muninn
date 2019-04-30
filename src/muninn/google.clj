@@ -1,8 +1,8 @@
-(ns scrapper.google
+(ns muninn.google
   (:require [clojure.string :as str]
             [net.cgrand.enlive-html :as html]
-            [scrapper.browser :as browser]
-            [scrapper.parser :as parser]))
+            [muninn.browser :as browser]
+            [muninn.parser :as parser]))
 
 (defn query-url
   "Given a `query` string, return a fetchable google.com url."

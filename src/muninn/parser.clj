@@ -1,4 +1,4 @@
-(ns scrapper.parser
+(ns muninn.parser
   (:require [clojure.java.io :as io]
             [net.cgrand.enlive-html :as html]))
 
