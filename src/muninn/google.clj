@@ -3,6 +3,7 @@
   This namespace rely on some transducers.
   @see https://clojure.org/reference/transducers"
   (:require [clojure.string :as str]
+            [clojure.tools.logging :as log]
             [muninn.browser :as browser]
             [muninn.parser :as parser]
             [net.cgrand.enlive-html :as html]))
@@ -36,16 +37,18 @@
   "Transducer extracting 'href' attribute out of a sequence of links."
   (map #(get-in % [:attrs :href])))
 
-(defn get-links!
+(defn search!
   "Given a `query` string (like 'Vegan food'), fetch google and extract all links
   from the first page."
   [query]
-  (some->> (query-url query)
-           (browser/fetch-url)
-           (:body)
-           (parser/to-html-tree)
-           (result-links)
-           (sequence xf-extract-hrefs)))
+  (let [links (some->> (query-url query)
+                       (browser/fetch-url)
+                       (:body)
+                       (parser/to-html-tree)
+                       (result-links)
+                       (sequence xf-extract-hrefs))]
+    (log/info "Found " (count links) " on Google for query: " query)
+    links))
 
 (comment
   ;; USAGE:

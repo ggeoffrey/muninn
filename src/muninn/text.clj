@@ -1,4 +1,4 @@
-(ns muninn.filterer
+(ns muninn.text
   "Filter text using regular expression and basic NLP"
   (:require [clj-fuzzy.stemmers :refer [lancaster lovins]]
             [clojure.string :as str]))
