@@ -1,4 +1,5 @@
 (ns muninn.parser
+  "Manipulate xml (and so HTML)"
   (:require [clojure.java.io :as io]
             [net.cgrand.enlive-html :as html]))
 

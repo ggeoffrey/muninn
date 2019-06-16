@@ -1,8 +1,11 @@
 (ns muninn.google
+  "Perform queries to google.com and extract links from it.
+  This namespace rely on some transducers.
+  @see https://clojure.org/reference/transducers"
   (:require [clojure.string :as str]
-            [net.cgrand.enlive-html :as html]
             [muninn.browser :as browser]
-            [muninn.parser :as parser]))
+            [muninn.parser :as parser]
+            [net.cgrand.enlive-html :as html]))
 
 (defn query-url
   "Given a `query` string, return a fetchable google.com url."
@@ -11,32 +14,31 @@
        "&q=" (browser/encode query)))
 
 (def xf-external-links
-  "Transducer filtering all meaningfull links on a sequence of links comming
-  from google page"
+  "Transducer filtering all meaningfull links on a sequence of links comming from
+  google page."
   (filter #(and (= :a (:tag %))
                 (not (str/includes? (:href (:attrs %)) "webcache.googleusercontent"))
                 (str/starts-with? (:href (:attrs %)) "http"))))
 
-(defn keep-only-externals
-  "Given a sequence `link-seq` of html :a nodes, return all the ones pointing to
-  actual websites outside of google.com."
-  [link-seq]
-  (sequence xf-external-links link-seq))
+(defn keep-only-external-links
+  "Given a list of `links` (html :a nodes), return all the ones pointing to actual
+  websites outside of google.com."
+  [links]
+  (sequence xf-external-links links))
 
 (defn result-links
-  "Given some `html` nodes tree comming from google.com, extract all meaningfull
-  links."
+  "Given some `html` tree comming from google.com, extract all meaningfull links."
   [html]
   (->> (html/select html [:div.rc :div.r :a])
-       (keep-only-externals)))
+       (keep-only-external-links)))
 
 (def xf-extract-hrefs
   "Transducer extracting 'href' attribute out of a sequence of links."
   (map #(get-in % [:attrs :href])))
 
 (defn get-links!
-  "Given a `query` string like 'Pitch Desk', fetch google and extract all
-  links from the first page."
+  "Given a `query` string (like 'Vegan food'), fetch google and extract all links
+  from the first page."
   [query]
   (some->> (query-url query)
            (browser/fetch-url)

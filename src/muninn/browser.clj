@@ -1,4 +1,5 @@
 (ns muninn.browser
+  "This namespace provide functions to simulate browser actions."
   (:require [clj-http.client :as http])
   (:import java.net.URLEncoder))
 
@@ -11,5 +12,7 @@
   [url]
   (http/get url {:headers {"User-Agent" user-agent}}))
 
-(defn encode [s]
+(defn encode
+  "Encode a string `s` to url-save syntax.
+  Eg: unicorns are real! => unicorns+are+real%21 "[s]
   (URLEncoder/encode s "UTF-8"))
