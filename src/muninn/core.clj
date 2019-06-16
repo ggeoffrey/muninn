@@ -23,9 +23,6 @@
   {:link    url
    :summary sentences})
 
-(defn create-output-file! [name]
-  (io/make-parents (str "./reports/" name ".txt")))
-
 (defn format-one-occurence
   "We don't want to output JSON or EDN to the output, we want simple text. This
   function take a context map and format it to text."
@@ -44,7 +41,7 @@
   file and write a summary to it. Write to disk."
   [query results]
   (let [file-name (str "./reports/" query ".txt")]
-    (create-output-file! file-name)
+    (io/make-parents file-name)
     (spit file-name (format-summary results))
     (log/info "Wrote " (str query ".txt"))))
 
