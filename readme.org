@@ -1,0 +1,21 @@
+* Usage
+
+You will need Java (>=8) and [[https://leiningen.org][Leiningen]] installed in you $PATH.
+
+Then follow these steps:
+
+ #+begin_src bash
+git clone https://github.com/ggeoffrey/muninn
+cd muninn
+./build.sh
+ #+end_src
+
+To perform a search, run 
+
+#+begin_src bash
+./search.sh "your query"
+#+end_src
+
+Do not forget the double quotes ("…").
+
+Results will appear in a directory called ~reports~.
