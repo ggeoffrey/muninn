@@ -1,9 +1,9 @@
 (ns muninn.text
-  "Filter text using regular expression and basic NLP"
+  "Filter text using regular expressions and basic NLP"
   (:require [clj-fuzzy.stemmers :refer [lancaster lovins]]
             [clojure.string :as str]))
 
-(defn match-stem?
+(defn- match-stem?
   "Take a `stemmer` function, a `word-a` and `word-b` strings.
   State if `word-a` and `word-b` share the same stem."
   [stemmer word-a word-b]

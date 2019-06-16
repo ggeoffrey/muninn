@@ -1,12 +1,12 @@
 (ns muninn.websites
-  "Manipulate html documents on the web. Fetch them and search in them."
+  "Fetch html documents and extract text out of them."
   (:require [clojure.string :as str]
             [muninn.browser :as browser]
             [muninn.parser :as parser]
             [net.cgrand.enlive-html :as html]))
 
 (defn- get-website-content!
-  "Given a `url` string, HTTP GET it and return the HTML <body>."
+  "Given a `url` string, HTTP GET it and return the HTML <body> tag."
   [url]
   (:body (browser/fetch-url url)))
 
@@ -32,6 +32,3 @@
   "Given a `url` string, fetch it and extract all text out of it."
   [url]
   (str/join " " (extract-paragraphs! url)))
-
-(comment
-  (extract-paragraphs! "https://pitchdeck.improvepresentation.com/what-is-a-pitch-deck"))

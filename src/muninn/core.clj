@@ -27,17 +27,17 @@
   "We don't want to output JSON or EDN to the output, we want simple text. This
   function take a context map and format it to text."
   [{:keys [link summary]}]
-  (str "link:" link "\n\n"
-       "summary:\n"
+  (str "[Link]: " link "\n\n"
+       "[Summary]:\n"
        (str/join "\n\n" summary)))
 
 (defn format-summary
-  "Given all returned `results`, format it to a text summary."
+  "Given a list of `results`, format it to a text summary."
   [results]
   (str/join "\n\n\n" (map format-one-occurence results)))
 
 (defn write-summary!
-  "Take a `query` text and search results. Will create a `reports/<query>.txt`
+  "Take a `query` text and search `results`. Will create a `reports/<query>.txt`
   file and write a summary to it. Write to disk."
   [query results]
   (let [file-name (str "./reports/" query ".txt")]
@@ -47,22 +47,23 @@
 
 (defn search-in-page!
   "Given a `query` string and a `url`, search in the page text for matching
-  sentences. Return all matching one associated with the `url`, so we we can
-  keep track where they come from."
+  sentences. Return all matching ones, associated with the `url`. Sentences are
+  associated to the `url` so we we can keep track where they came from."
   [query url]
-  (log/info "Scrapping " url " …")
+  (log/info "Fetching " url " …")
   (try
     (->> (website/extract-text! url)
          (sentences-matching query)
          (contextualise url))
     (catch Throwable t
       (log/error "Unable to scrapp website: " url ". Cause" (.getCause t))
-      (contextualise url ["ERROR: Unable to scrap this website, please check logs for more info."]))))
+      (contextualise url ["ERROR: Unable to fetch this website, please check logs for more info."]))))
 
 (defn search-and-save-to-file!
-  "Given a `query` text, search on Google, explore each result, find sentences
-  matching `query` into each one of them, and spit out the result to a <query>.txt
-  file in reports/ folder."
+  "Given a `query` string:
+  - search it on Google,
+  - find sentences matching `query` into each result,
+  - spit out the result to a <query>.txt file."
   [query]
   (try
     (->> (google/search! query)
@@ -82,7 +83,7 @@
 (defn build-queries
   "Given a `user-input` string, and a configuration `config`, produce a list of
   strings with configuration keywords appended.
-  Eg: 'vegan food' ['trends', 'brand'] => ('vegan food trends' 'vegan food brand')"
+  Eg: 'vegan food'{:query-suffix ['trends', 'brand']} => ('vegan food trends' 'vegan food brand')"
   [user-input config]
   (map #(str user-input " " %) (:query-suffix config)))
 
@@ -94,5 +95,3 @@
     (log/info "Done.")
     (System/exit 0)))
 
-(comment
-  (-main "almond milk france"))

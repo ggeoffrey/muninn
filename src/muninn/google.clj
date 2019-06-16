@@ -1,7 +1,6 @@
 (ns muninn.google
-  "Perform queries to google.com and extract links from it.
-  This namespace rely on some transducers.
-  @see https://clojure.org/reference/transducers"
+  "Perform queries to Google and extract links from it.
+  This namespace rely on some transducers."
   (:require [clojure.string :as str]
             [clojure.tools.logging :as log]
             [muninn.browser :as browser]
@@ -16,7 +15,7 @@
 
 (def xf-external-links
   "Transducer filtering all meaningfull links on a sequence of links comming from
-  google page."
+  google page. @see https://clojure.org/reference/transducers"
   (filter #(and (= :a (:tag %))
                 (not (str/includes? (:href (:attrs %)) "webcache.googleusercontent"))
                 (str/starts-with? (:href (:attrs %)) "http"))))
@@ -34,7 +33,8 @@
        (keep-only-external-links)))
 
 (def xf-extract-hrefs
-  "Transducer extracting 'href' attribute out of a sequence of links."
+  "Transducer extracting 'href' attribute out of a sequence of links.
+  @see https://clojure.org/reference/transducers"
   (map #(get-in % [:attrs :href])))
 
 (defn search!
@@ -49,17 +49,3 @@
                        (sequence xf-extract-hrefs))]
     (log/info "Found " (count links) " on Google for query: " query)
     links))
-
-(comment
-  ;; USAGE:
-  (get-links! "pitch+deck")
-  ;; =>
-  #_("https://pitchdeck.improvepresentation.com/what-is-a-pitch-deck"
-     "https://piktochart.com/blog/startup-pitch-decks-what-you-can-learn/"
-     "https://slidebean.com/blog/startups-pitch-deck-examples"
-     "https://articles.bplans.com/what-to-include-in-your-pitch-deck/"
-     "https://venngage.com/blog/best-pitch-decks/"
-     "https://pitchdeckexamples.com/"
-     "https://guykawasaki.com/the-only-10-slides-you-need-in-your-pitch/"
-     "http://bestpitchdecks.com/")
-  )

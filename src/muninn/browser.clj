@@ -13,6 +13,7 @@
   (http/get url {:headers {"User-Agent" user-agent}}))
 
 (defn encode
-  "Encode a string `s` to url-save syntax.
-  Eg: unicorns are real! => unicorns+are+real%21 "[s]
+  "Encode a string `s` to url-safe syntax.
+  Eg: 'unicorns are real!' => 'unicorns+are+real%21' "
+  [s]
   (URLEncoder/encode s "UTF-8"))
