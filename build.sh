@@ -1,4 +1,5 @@
 #!/bin/bash
 
+lein uberjar
 cp ./target/uberjar/muninn.jar ./dist/
-chmod +x ./dist/extractSummary.sh
+chmod +x ./search.sh
