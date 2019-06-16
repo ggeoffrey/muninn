@@ -91,7 +91,8 @@
         user-input (str/join " " args)]
     (log/info "Searching for: " user-input)
     (doall (map search-and-save-to-file! (build-queries user-input config)))
-    (log/info "Done.")))
+    (log/info "Done.")
+    (System/exit 0)))
 
 (comment
   (-main "almond milk france"))
