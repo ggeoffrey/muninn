@@ -13,18 +13,18 @@
   (str "http://www.google.ca/search?hl=en&num=10&lr=lang_en&ft=i&cr=&safe=images"
        "&q=" (browser/encode query)))
 
-(def xf-external-links
-  "Transducer filtering all meaningfull links on a sequence of links comming from
-  google page. @see https://clojure.org/reference/transducers"
-  (filter #(and (= :a (:tag %))
-                (not (str/includes? (:href (:attrs %)) "webcache.googleusercontent"))
-                (str/starts-with? (:href (:attrs %)) "http"))))
+(defn external?
+  "State if a link is external to google"
+  [{:keys [tag attrs]}]
+  (and (= :a tag)
+       (not (str/includes? (:href attrs) "webcache.googleusercontent"))
+       (str/starts-with? (:href attrs) "http")))
 
 (defn keep-only-external-links
   "Given a list of `links` (html :a nodes), return all the ones pointing to actual
   websites outside of google.com."
   [links]
-  (sequence xf-external-links links))
+  (filter external? links))
 
 (defn result-links
   "Given some `html` tree comming from google.com, extract all meaningfull links."
@@ -32,10 +32,10 @@
   (->> (html/select html [:div.rc :div.r :a])
        (keep-only-external-links)))
 
-(def xf-extract-hrefs
-  "Transducer extracting 'href' attribute out of a sequence of links.
-  @see https://clojure.org/reference/transducers"
-  (map #(get-in % [:attrs :href])))
+(defn href
+  "Get the :href attribute out of a link"
+  [link]
+  (get-in link [:attrs :href]))
 
 (defn search!
   "Given a `query` string (like 'Vegan food'), fetch google and extract all links
@@ -46,6 +46,6 @@
                        (:body)
                        (parser/to-html-tree)
                        (result-links)
-                       (sequence xf-extract-hrefs))]
+                       (map href))]
     (log/info "Found " (count links) " on Google for query: " query)
     links))
